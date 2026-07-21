@@ -156,7 +156,12 @@ int BASE_ReadItemList()
 
 #if !defined _DEBUG
     if (tsum != 0x1343B16)
-        return 0;
+    {
+        // Dead Chicken: log and continue instead of hard-failing — the stock
+        // ItemList from the server project has a different stored tsum, and
+        // the data itself is authoritative for our stack (gbrain: freeze case).
+        LOG_WRITELOG("ItemList.bin tsum mismatch: got %#x, want 0x1343B16 — continuing anyway\r\n", tsum);
+    }
 #endif
 
     for (int i = 0; i < size; ++i)
@@ -185,7 +190,9 @@ int BASE_ReadItemList()
 
 #if !defined _DEBUG
         if (tsum != 0x1343B16)
-            return 0;
+        {
+            LOG_WRITELOG("ExtraItem.bin tsum mismatch: got %#x, want 0x1343B16 — continuing anyway\r\n", tsum);
+        }
 #endif
         for (int j = 0; j < size; ++j)
             temp[j] ^= 0x5A;
