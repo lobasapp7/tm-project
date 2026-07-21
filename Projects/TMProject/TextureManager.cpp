@@ -1446,7 +1446,10 @@ void TextureManager::Release_GuildMarkList()
 int TextureManager::InitRenderTargetTexture()
 {
 	RenderDevice* pRenderDevice = g_pApp->m_pRenderDevice;
-	if (FAILED(D3DXCreateTexture(
+	LOG_WRITELOG("RTT: backbuffer %ux%u fmt=%u aa=%d\r\n",
+		pRenderDevice->m_d3dsdBackBuffer.Width, pRenderDevice->m_d3dsdBackBuffer.Height,
+		(unsigned)pRenderDevice->m_d3dsdBackBuffer.Format, pRenderDevice->m_nAntiAliasLevel);
+	HRESULT hrTex = D3DXCreateTexture(
 		pRenderDevice->m_pd3dDevice,
 		pRenderDevice->m_d3dsdBackBuffer.Width,
 		pRenderDevice->m_d3dsdBackBuffer.Height,
@@ -1454,8 +1457,10 @@ int TextureManager::InitRenderTargetTexture()
 		1,
 		D3DFORMAT::D3DFMT_X8R8G8B8,
 		D3DPOOL::D3DPOOL_MANAGED,
-		&m_pOriginTexture)))
+		&m_pOriginTexture);
+	if (FAILED(hrTex))
 	{
+		LOG_WRITELOG("RTT: D3DXCreateTexture FAILED hr=%#x\r\n", hrTex);
 		return 0;
 	}
 
