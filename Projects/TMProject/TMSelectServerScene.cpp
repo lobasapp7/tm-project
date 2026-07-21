@@ -586,6 +586,24 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 		}
 	}
 
+	// Dead Chicken: single-server setup - selecting the group advances straight
+	// to the login panel (the stock channel list control is broken in our UI
+	// package: its texture set is absent, leaving width 0 / unclickable).
+	if (g_pServerList[nIndexN][1][0])
+	{
+		LOG_WRITELOG("DeadChicken: auto-advance to login, server=%s\r\n", g_pServerList[nIndexN][1]);
+		g_pObjectManager->m_nServerGroupIndex = nIndexN;
+		g_pObjectManager->m_nServerIndex = 1;
+		sprintf_s(g_pApp->m_szServerIP, "%s", g_pServerList[nIndexN][1]);
+		m_pNServerSelect->SetVisible(0);
+		for (int i = 0; i < 3; ++i)
+			m_pLoginBtns[i]->SetVisible(1);
+		m_pLoginPanel->SetVisible(1);
+		m_pControlContainer->SetFocusedControl(m_pEditID);
+		m_cLogin = 1;
+		m_dwLoginTime = g_pTimerManager->GetServerTime();
+	}
+
 	SwapLauncher();
 
 	break;
