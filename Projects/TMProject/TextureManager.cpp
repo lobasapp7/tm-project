@@ -1449,6 +1449,9 @@ int TextureManager::InitRenderTargetTexture()
 	LOG_WRITELOG("RTT: backbuffer %ux%u fmt=%u aa=%d\r\n",
 		pRenderDevice->m_d3dsdBackBuffer.Width, pRenderDevice->m_d3dsdBackBuffer.Height,
 		(unsigned)pRenderDevice->m_d3dsdBackBuffer.Format, pRenderDevice->m_nAntiAliasLevel);
+	// Dead Chicken: RENDERTARGET textures must live in D3DPOOL_DEFAULT —
+	// MANAGED is an invalid combination and strict D3DX (Wine builtin)
+	// rejects it with D3DERR_INVALIDCALL.
 	HRESULT hrTex = D3DXCreateTexture(
 		pRenderDevice->m_pd3dDevice,
 		pRenderDevice->m_d3dsdBackBuffer.Width,
@@ -1456,7 +1459,7 @@ int TextureManager::InitRenderTargetTexture()
 		1,
 		1,
 		D3DFORMAT::D3DFMT_X8R8G8B8,
-		D3DPOOL::D3DPOOL_MANAGED,
+		D3DPOOL::D3DPOOL_DEFAULT,
 		&m_pOriginTexture);
 	if (FAILED(hrTex))
 	{
