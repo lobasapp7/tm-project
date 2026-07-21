@@ -463,8 +463,16 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 					break;
 				}
 
+				if (num == 1)
+				{
+					LOG_WRITELOG("SelectServer: nIndexN=%d maxgroup=%d e0='%s' e1='%s' e2='%s'\r\n",
+						nIndexN, m_nMaxGroupN,
+						g_pServerList[nIndexN][0], g_pServerList[nIndexN][1], g_pServerList[nIndexN][2]);
+				}
+
 				if (g_pServerList[nIndexN][num][0])
 				{
+					LOG_WRITELOG("SelectServer: item num=%d text='%s'\r\n", num, g_pServerList[nIndexN][num]);
 					int nCastle = 0;
 					if (nAspGetweek == -1 || nAspGetweek != 1)
 						nCastle = IsCastle(num - 1);
