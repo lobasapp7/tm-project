@@ -428,13 +428,17 @@ HRESULT NewApp::InitDevice()
 	}
 	LOG_WRITELOGSTRING("NewApp: sound stage done\r\n");
 
+	LOG_WRITELOG("NewApp: music=%d\r\n", m_nMusic);
 	if (m_nMusic > 0)
 	{
 		m_pBGMManager = new DS_SOUND_MANAGER(1, 30 * m_nMusic - 3000);
 		g_pApp->m_pBGMManager->SetVolume(0, g_pApp->m_pBGMManager->m_lBGMVolume);
 	}
+	LOG_WRITELOGSTRING("NewApp: BGM stage done\r\n");
 
+	LOG_WRITELOGSTRING("NewApp: before EventTranslator\r\n");
 	m_pEventTranslator = new EventTranslator();
+	LOG_WRITELOGSTRING("NewApp: EventTranslator created\r\n");
 	if (!m_pEventTranslator->Initialize(m_hWnd))
 	{
 		LOG_WRITELOG("Initialize Interface Failed");
@@ -449,17 +453,21 @@ HRESULT NewApp::InitDevice()
 
 	m_pTimerManager = new TimerManager();
 
+	LOG_WRITELOGSTRING("NewApp: before ObjectManager\r\n");
 	m_pObjectManager = new ObjectManager();
 	if (m_pObjectManager != nullptr)
 	{
 		m_pObjectManager->InvalidateDeviceObjects();
 		m_pObjectManager->RestoreDeviceObjects();
 	}
+	LOG_WRITELOGSTRING("NewApp: ObjectManager done\r\n");
 
 	if (m_pTimerManager != nullptr)
 		m_pTimerManager->StartTimer();
 
+	LOG_WRITELOGSTRING("NewApp: before CPSock\r\n");
 	m_pSocketManager = new CPSock();
+	LOG_WRITELOGSTRING("NewApp: CPSock created\r\n");
 
 	if (!m_pSocketManager->WSAInitialize())
 	{
