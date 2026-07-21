@@ -404,6 +404,7 @@ HRESULT NewApp::InitDevice()
 	}
 	LOG_WRITELOGSTRING("NewApp: render device OK\r\n");
 
+	LOG_WRITELOG("NewApp: sound=%d, init sound...\r\n", m_nSound);
 	if (m_nSound > 0)
 	{
 		InitMusicList();
@@ -425,6 +426,7 @@ HRESULT NewApp::InitDevice()
 		m_pSoundManager->SetSoundVolume(nVolume);
 		m_pSoundManager->LoadSoundData();
 	}
+	LOG_WRITELOGSTRING("NewApp: sound stage done\r\n");
 
 	if (m_nMusic > 0)
 	{
