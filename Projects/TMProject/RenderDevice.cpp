@@ -178,13 +178,15 @@ int RenderDevice::Initialize(HWND hWnd)
 
 	if (m_pSprite == nullptr)
 	{
-		if (FAILED(D3DXCreateSprite(m_pd3dDevice, &m_pSprite)))
+		HRESULT hrSpr = D3DXCreateSprite(m_pd3dDevice, &m_pSprite);
+	if (FAILED(hrSpr))
 		{
-			LOG_WRITELOG("Error Create Sprite\r\n");
+			LOG_WRITELOG("Error Create Sprite hr=%#x\r\n", hrSpr);
 			return 0;
 		}
 	}
 
+	LOG_WRITELOG("Init: sprite OK\r\n");
 	if (!InitVertexShader())
 	{
 		LOG_WRITELOG("Error VertexShader \r\n");
@@ -552,7 +554,8 @@ HRESULT RenderDevice::RestoreDeviceObjects()
 
 	if (m_pSprite == nullptr)
 	{
-		if (FAILED(D3DXCreateSprite(m_pd3dDevice, &m_pSprite)))
+		HRESULT hrSpr = D3DXCreateSprite(m_pd3dDevice, &m_pSprite);
+	if (FAILED(hrSpr))
 			return 0;
 	}
 
