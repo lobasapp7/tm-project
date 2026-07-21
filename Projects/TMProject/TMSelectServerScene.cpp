@@ -674,7 +674,7 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 	{
 		case B_LOGIN_OK:
 		{
-			LOG_WRITELOG("B_LOGIN_OK: connect to %s:%d\r\n", g_pApp->m_szServerIP, 8281);
+			LOG_WRITELOG("B_LOGIN_OK: connect to %s\r\n", g_pApp->m_szServerIP);
 			unsigned int LiveTime = g_pTimerManager->GetServerTime();
 			if (LastSendMsgTime + 1500 > LiveTime)
 				return 1;
@@ -715,11 +715,9 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 			m_pMessagePanel->SetMessage(g_pMessageStringTable[7], 4000);
 			m_pMessagePanel->SetVisible(1, 1);
 
-			LOG_WRITELOG("B_LOGIN_OK: calling ConnectServer...\r\n");
 			if (!g_pSocketManager->ConnectServer(g_pApp->m_szServerIP, TM_CONNECTION_PORT, 0, 1124))
 			{
 				LOG_WRITELOG("B_LOGIN_OK: ConnectServer FAILED\r\n");
-			{
 				pLoginOK->SetEnable(1);
 
 				m_pMessagePanel->SetMessage(g_pMessageStringTable[8], 4000);
