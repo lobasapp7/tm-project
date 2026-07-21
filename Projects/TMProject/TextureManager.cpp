@@ -1494,7 +1494,7 @@ int TextureManager::InitRenderTargetTexture()
 		1,
 		1,
 		D3DFORMAT::D3DFMT_X8R8G8B8,
-		D3DPOOL::D3DPOOL_MANAGED,
+		D3DPOOL::D3DPOOL_DEFAULT,
 		&m_pOriginTexture)))
 	{
 		return 0;
@@ -1509,7 +1509,7 @@ int TextureManager::InitRenderTargetTexture()
 		1,
 		1,
 		D3DFORMAT::D3DFMT_X8R8G8B8,
-		D3DPOOL::D3DPOOL_MANAGED,
+		D3DPOOL::D3DPOOL_DEFAULT,
 		&m_pAccumTexture)))
 	{
 		return 0;
@@ -1524,7 +1524,7 @@ int TextureManager::InitRenderTargetTexture()
 		1,
 		1,
 		D3DFORMAT::D3DFMT_X8R8G8B8,
-		D3DPOOL::D3DPOOL_MANAGED,
+		D3DPOOL::D3DPOOL_DEFAULT,
 		&m_pRenderTexture)))
 	{
 		return 0;
@@ -1542,7 +1542,7 @@ int TextureManager::InitRenderTargetTexture()
 			1,
 			1,
 			D3DFORMAT::D3DFMT_X8R8G8B8,
-			D3DPOOL::D3DPOOL_MANAGED,
+			D3DPOOL::D3DPOOL_DEFAULT,
 			&m_pBloomTexture[i])))
 		{
 			return 0;
@@ -1556,7 +1556,7 @@ int TextureManager::InitRenderTargetTexture()
 			1,
 			1,
 			D3DFORMAT::D3DFMT_X8R8G8B8,
-			D3DPOOL::D3DPOOL_MANAGED,
+			D3DPOOL::D3DPOOL_DEFAULT,
 			&m_pBloomTexture1[i])))
 		{
 			return 0;
