@@ -465,8 +465,8 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 
 				if (num == 1)
 				{
-					LOG_WRITELOG("SelectServer: nIndexN=%d maxgroup=%d e0='%s' e1='%s' e2='%s'\r\n",
-						nIndexN, m_nMaxGroupN,
+					LOG_WRITELOG("SelectServer: nIndexN=%d e0='%s' e1='%s' e2='%s'\r\n",
+						nIndexN,
 						g_pServerList[nIndexN][0], g_pServerList[nIndexN][1], g_pServerList[nIndexN][2]);
 				}
 
