@@ -592,6 +592,10 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 	if (g_pServerList[nIndexN][1][0])
 	{
 		LOG_WRITELOG("DeadChicken: auto-advance to login, server=%s\r\n", g_pServerList[nIndexN][1]);
+		for (int i = 0; i < 3; ++i)
+			if (m_pLoginBtns[i])
+				LOG_WRITELOG("DeadChicken: btn[%d] rect x=%.1f y=%.1f w=%d h=%d\r\n", i,
+					m_pLoginBtns[i]->m_nPosX, m_pLoginBtns[i]->m_nPosY, m_pLoginBtns[i]->m_nWidth, m_pLoginBtns[i]->m_nHeight);
 		g_pObjectManager->m_nServerGroupIndex = nIndexN;
 		g_pObjectManager->m_nServerIndex = 1;
 		sprintf_s(g_pApp->m_szServerIP, "%s", g_pServerList[nIndexN][1]);
