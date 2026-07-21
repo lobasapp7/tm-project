@@ -371,6 +371,7 @@ int TMSelectServerScene::InitializeScene()
 
 int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int idwEvent)
 {
+	LOG_WRITELOG("OnControlEvent: ctrl=%u event=%u\r\n", idwControlID, idwEvent);
 	int nMaxGroupN = 0;
 	for (int j = 0; j < m_nMaxGroup; ++j)
 	{
