@@ -461,6 +461,8 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 				if (num >= MAX_SERVERNUMBER)
 				{
 					pServerList->SetVisible(1);
+					LOG_WRITELOG("SelectServer: channel list rect x=%.1f y=%.1f w=%d h=%d visible=%d\r\n",
+						pServerList->m_nPosX, pServerList->m_nPosY, pServerList->m_nWidth, pServerList->m_nHeight, 1);
 					break;
 				}
 
