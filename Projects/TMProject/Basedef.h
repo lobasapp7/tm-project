@@ -898,7 +898,9 @@ constexpr auto MSG_AccountLogin_Opcode = 0x20D;
 struct MSG_AccountLogin
 {
 	MSG_STANDARD Header;
-	char AccountPass[16];
+	// Dead Chicken: the 7662 wire format uses a 12-byte password field
+	// (ACCOUNTPASS_LENGTH) - 16 shifts Version off the server-expected offset.
+	char AccountPass[12];
 	char AccountName[16];
 	char TID[52];
 	int Version;

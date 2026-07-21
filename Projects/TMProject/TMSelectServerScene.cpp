@@ -744,7 +744,7 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 			stAccountLogin.Header.ID = 0;
 			stAccountLogin.Header.Type = MSG_AccountLogin_Opcode;
 			stAccountLogin.Force = 1;
-			stAccountLogin.Version = 1758;
+			stAccountLogin.Version = 12000; // Dead Chicken: 7662 client version
 			
 			DWORD dwSize = 0;
 			IP_ADAPTER_INFO stInfo{};
