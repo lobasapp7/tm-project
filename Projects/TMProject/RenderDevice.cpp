@@ -954,11 +954,20 @@ int RenderDevice::InitVertexShader()
 			_read(handle, pCode->GetBufferPointer(), pCode->GetBufferSize());
 			_close(handle);
 
-			if (FAILED(m_pd3dDevice->CreateVertexDeclaration(VertexDecl[i % 4], &m_pVertexDeclaration[i])))
+			HRESULT hrDecl = m_pd3dDevice->CreateVertexDeclaration(VertexDecl[i % 4], &m_pVertexDeclaration[i]);
+			if (FAILED(hrDecl))
+			{
+				LOG_WRITELOG("VS: CreateVertexDeclaration[%d] FAILED hr=%#x\r\n", i, hrDecl);
 				return 0;
+			}
 
-			if (FAILED(m_pd3dDevice->CreateVertexShader((const DWORD*)pCode->GetBufferPointer(), &m_pVertexShader[i])))
+			HRESULT hrVS = m_pd3dDevice->CreateVertexShader((const DWORD*)pCode->GetBufferPointer(), &m_pVertexShader[i]);
+			if (FAILED(hrVS))
+			{
+				LOG_WRITELOG("VS: CreateVertexShader[%d] FAILED hr=%#x\r\n", i, hrVS);
 				return 0;
+			}
+			LOG_WRITELOG("VS: shader[%d] OK\r\n", i);
 
 			pCode->Release();
 		}
