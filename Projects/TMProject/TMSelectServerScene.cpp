@@ -601,7 +601,16 @@ int TMSelectServerScene::OnControlEvent(unsigned int idwControlID, unsigned int 
 		sprintf_s(g_pApp->m_szServerIP, "%s", g_pServerList[nIndexN][1]);
 		m_pNServerSelect->SetVisible(0);
 		for (int i = 0; i < 3; ++i)
+		{
 			m_pLoginBtns[i]->SetVisible(1);
+			// Dead Chicken: the login buttons also get width 0 from the absent
+			// texture sets - force sane dimensions so they are clickable.
+			if (m_pLoginBtns[i] && m_pLoginBtns[i]->m_nWidth <= 0)
+			{
+				m_pLoginBtns[i]->m_nWidth = 95;
+				m_pLoginBtns[i]->m_nHeight = 20;
+			}
+		}
 		m_pLoginPanel->SetVisible(1);
 		m_pControlContainer->SetFocusedControl(m_pEditID);
 		m_cLogin = 1;
