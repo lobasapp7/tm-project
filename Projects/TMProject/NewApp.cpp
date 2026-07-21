@@ -402,6 +402,7 @@ HRESULT NewApp::InitDevice()
 		// todo: release the m_prenderdevice?
 		return 0;
 	}
+	LOG_WRITELOGSTRING("NewApp: render device OK\r\n");
 
 	if (m_nSound > 0)
 	{

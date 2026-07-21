@@ -768,6 +768,7 @@ int RenderDevice::InitMeshManager()
 
 int RenderDevice::InitVertexShader()
 {
+	LOG_WRITELOG("InitVertexShader: entry\r\n");
 	D3DVERTEXELEMENT9 VertexDecl1[5];
 	D3DVERTEXELEMENT9 VertexDecl2[6];
 	D3DVERTEXELEMENT9 VertexDecl3[6];
