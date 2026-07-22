@@ -812,6 +812,13 @@ HRESULT NewApp::MsgProc(HWND hWnd, DWORD uMsg, DWORD wParam, int lParam)
 	{
 	case WM_SETCURSOR:
 			return 0;
+	// Dead Chicken: the stock engine reads mouse DOWN exclusively from the
+	// DirectInput poll (EventTranslator::ReadInputEventData â†’ OnLMousePressed
+	// â†’ 513). Under Wine's explorer virtual desktop DirectInput never reports
+	// button presses, so 513 never reached the scenes and every SButton was
+	// dead (UP only fires when m_bPressed was set by DOWN). Forward the Win32
+	// message the same way UP/MOVE already flow.
+	case WM_LBUTTONDOWN:
 	case WM_MOUSEMOVE:
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
@@ -899,7 +906,7 @@ HRESULT NewApp::MsgProc(HWND hWnd, DWORD uMsg, DWORD wParam, int lParam)
 					}
 				}
 
-				if (!strcmp(static_cast<TMFieldScene*>(g_pCurrentScene)->m_pTextIMEDesc->GetText(), "Î"))
+				if (!strcmp(static_cast<TMFieldScene*>(g_pCurrentScene)->m_pTextIMEDesc->GetText(), "ï¿½"))
 					SendMessage(hWnd, 0x281, 0, -1073741809);
 				else
 					SendMessage(hWnd, 0x281u, 0, -1);
@@ -1246,7 +1253,7 @@ HRESULT NewApp::MsgProc(HWND hWnd, DWORD uMsg, DWORD wParam, int lParam)
 	{
 		if (g_pCurrentScene != nullptr)
 		{
-			if (strcmp(g_pCurrentScene->m_pTextIMEDesc->GetText(), "Î"))
+			if (strcmp(g_pCurrentScene->m_pTextIMEDesc->GetText(), "ï¿½"))
 				SendMessageA(hWnd, 0x281, 0, -1073741809);
 			else
 				SendMessageA(hWnd, 0x281, 0, -1);
