@@ -812,13 +812,6 @@ HRESULT NewApp::MsgProc(HWND hWnd, DWORD uMsg, DWORD wParam, int lParam)
 	{
 	case WM_SETCURSOR:
 			return 0;
-	// Dead Chicken: the stock engine reads mouse DOWN exclusively from the
-	// DirectInput poll (EventTranslator::ReadInputEventData → OnLMousePressed
-	// → 513). Under Wine's explorer virtual desktop DirectInput never reports
-	// button presses, so 513 never reached the scenes and every SButton was
-	// dead (UP only fires when m_bPressed was set by DOWN). Forward the Win32
-	// message the same way UP/MOVE already flow.
-	case WM_LBUTTONDOWN:
 	case WM_MOUSEMOVE:
 	case WM_LBUTTONUP:
 	case WM_RBUTTONUP:
@@ -1081,6 +1074,26 @@ HRESULT NewApp::MsgProc(HWND hWnd, DWORD uMsg, DWORD wParam, int lParam)
 	}
 	break;
 	case WM_LBUTTONDOWN:
+	{
+		if (m_pAviPlayer != nullptr && m_pAviPlayer->m_psCurrent == PLAYSTATE::Running)
+		{
+			m_pAviPlayer->CloseClip();
+			SAFE_DELETE(m_pAviPlayer);
+			InitDevice();
+		}
+
+		// Dead Chicken: the stock engine sources mouse DOWN exclusively from
+		// the DirectInput poll (EventTranslator::ReadInputEventData →
+		// OnLMousePressed → 513); MsgProc only forwarded MOVE/UP. Under Wine's
+		// explorer virtual desktop DirectInput never reports button presses, so
+		// SButton.m_bPressed was never set and UP (delivered via Win32) silently
+		// did nothing — the account-lock numpad and every in-world button were
+		// unclickable. Forward the Win32 DOWN the same way UP/MOVE already flow;
+		// harmless on real Windows, where DirectInput keeps working in parallel.
+		if (m_pEventTranslator != nullptr)
+			m_pEventTranslator->OnMouseEvent(uMsg, wParam, LOWORD(lParam), HIWORD(lParam));
+	}
+	break;
 	case WM_LBUTTONDBLCLK:
 	case WM_RBUTTONDOWN:
 	case WM_RBUTTONDBLCLK:
