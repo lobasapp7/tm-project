@@ -132,6 +132,26 @@ int TMSelectCharScene::InitializeScene()
 		for (int i = 0; i < 10; ++i)
 			m_pBtnNumDlg[i] = static_cast<SButton*>(m_pControlContainer->FindControl(i + 66437));
 
+		// Dead Chicken: account-lock dialog diagnostics — dump geometry of the
+		// dialog, its digit buttons and the OK/cancel/change row so we can see
+		// in the log whether the click targets line up with the hit-test rects.
+		// (SControl coords/sizes are float — print with %f, the old %d logs lied.)
+		LOG_WRITELOG("DeadChicken: lockdlg pos x=%.1f y=%.1f w=%.1f h=%.1f visible=%d\r\n",
+			m_pAccountLockDlg->m_nPosX, m_pAccountLockDlg->m_nPosY,
+			m_pAccountLockDlg->m_nWidth, m_pAccountLockDlg->m_nHeight, m_pAccountLockDlg->IsVisible());
+		for (int i = 0; i < 10; ++i)
+			if (m_pBtnNumDlg[i])
+				LOG_WRITELOG("DeadChicken: numbtn[%d] id=%u x=%.1f y=%.1f w=%.1f h=%.1f\r\n", i,
+					m_pBtnNumDlg[i]->m_dwControlID, m_pBtnNumDlg[i]->m_nPosX, m_pBtnNumDlg[i]->m_nPosY,
+					m_pBtnNumDlg[i]->m_nWidth, m_pBtnNumDlg[i]->m_nHeight);
+		for (unsigned int id = 66433; id <= 66435; ++id)
+		{
+			auto pBtn = static_cast<SButton*>(m_pControlContainer->FindControl(id));
+			if (pBtn)
+				LOG_WRITELOG("DeadChicken: actbtn id=%u x=%.1f y=%.1f w=%.1f h=%.1f\r\n", id,
+					pBtn->m_nPosX, pBtn->m_nPosY, pBtn->m_nWidth, pBtn->m_nHeight);
+		}
+
 		m_pAccountLock = static_cast<SPanel*>(m_pControlContainer->FindControl(66128u));
 
 		m_pAccountLock->SetPos(
@@ -378,6 +398,9 @@ int TMSelectCharScene::InitializeScene()
 
 int TMSelectCharScene::OnControlEvent(unsigned int idwControlID, unsigned int idwEvent)
 {
+	// Dead Chicken: trace every control event (account-lock diagnostics).
+	LOG_WRITELOG("DeadChicken: SelChar OnControlEvent ctrl=%u event=%u lock=%d\r\n",
+		idwControlID, idwEvent, g_AccountLock);
 	STRUCT_SELCHAR* pSelChar = &g_pObjectManager->m_stSelCharData;
 	unsigned int dwServerTime = g_pTimerManager->GetServerTime();
 
@@ -839,6 +862,10 @@ int TMSelectCharScene::OnKeyDownEvent(unsigned int iKeyCode)
 
 int TMSelectCharScene::OnMouseEvent(unsigned int dwFlags, unsigned int wParam, int nX, int nY)
 {
+	// Dead Chicken: trace mouse clicks (account-lock diagnostics).
+	if (dwFlags == 513 || dwFlags == 514)
+		LOG_WRITELOG("DeadChicken: SelChar mouse flags=%u x=%d y=%d lock=%d dlgvis=%d\r\n",
+			dwFlags, nX, nY, g_AccountLock, m_pAccountLockDlg ? m_pAccountLockDlg->IsVisible() : -1);
 	if (TMScene::OnMouseEvent(dwFlags, wParam, nX, nY) == 1)
 		return 1;
 
